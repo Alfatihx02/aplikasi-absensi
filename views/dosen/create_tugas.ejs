@@ -1,0 +1,162 @@
+<%- include('../partials/head') %>
+<%- include('../partials/dosen-navbar2') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <%- include('../partials/messages') %>
+        <div class="row">
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Daftar Tugas untuk <%= data.nama_matakuliah %></p>
+                        
+                        <% if (tugas && tugas.length > 0) { %>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Judul Tugas</th>
+                                            <th>File Tugas</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% tugas.forEach(function(t) { %>
+                                            <tr>
+                                                <td><%= t.judul_tugas %></td>
+                                                <td>
+                                                    <% if (t.file_tugas) { %>
+                                                        <a href="/dosen/info-tugas/<%= t.id_tugas %>">Lihat Info Tugas</a>
+                                                    <% } else { %>
+                                                        <span class="text-muted">Tidak ada file</span>
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <a href="/dosen/delete_tugas/<%= t.id_tugas %>" class="btn btn-danger text-light">Hapus</a>
+                                                    <button onclick="showEditForm('<%= t.id_tugas %>', '<%= t.judul_tugas %>')" class="btn btn-warning text-light">Edit</button>
+                                                </td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } else { %>
+                            <p class="text-muted">Tugas belum ada.</p>
+                        <% } %>
+                        
+                        <!-- Tombol untuk membuat tugas baru -->
+                        <div class="tombol">
+                            <button id="toggleFormBtn" class="btn btn-primary mt-3">Buat Tugas</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form untuk membuat tugas baru -->
+            <div class="col-md-6 grid-margin stretch-card" id="tugasForm" style="display: none;">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Form Pembuatan Tugas</h4>
+                        <form action="/dosen/upload_tugas/<%= data.id_jadwal %>" class="forms-sample" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="judul_tugas">Judul Tugas</label>
+                                <input type="text" name="judul_tugas" class="form-control" id="judul_tugas" placeholder="Masukkan judul tugas" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="file_tugas">File Upload (Opsional)</label>
+                                <input type="file" name="file_tugas" class="file-upload-default" id="file_tugas">
+                                <div class="input-group col-xs-12 d-flex align-items-center">
+                                    <input type="text" class="form-control file-upload-info" id="file_upload_info" disabled placeholder="Upload File" />
+                                    <span class="input-group-append ms-2">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary me-2">Submit</button>
+                            <button type="button" class="btn btn-light" onclick="window.history.back();">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form untuk mengedit tugas -->
+            <div class="col-md-6 grid-margin stretch-card" id="editTugasForm" style="display: none;">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Form Edit Tugas</h4>
+                        <form action="/dosen/update_tugas" class="forms-sample" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="id_tugas" id="edit_id_tugas">
+                            <div class="form-group">
+                                <label for="edit_judul_tugas">Judul Tugas</label>
+                                <input type="text" name="judul_tugas" class="form-control" id="edit_judul_tugas" placeholder="Masukkan judul tugas" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="edit_file_tugas">File Upload (Opsional)</label>
+                                <input type="file" name="file_tugas" class="file-upload-default" id="edit_file_tugas">
+                                <div class="input-group col-xs-12 d-flex align-items-center">
+                                    <input type="text" class="form-control file-upload-info" id="edit_file_upload_info" disabled placeholder="Upload File" />
+                                    <span class="input-group-append ms-2">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary me-2">Update</button>
+                            <button type="button" class="btn btn-light" onclick="hideEditForm()">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fungsi untuk menampilkan form edit
+    function showEditForm(id_tugas, judul_tugas) {
+        document.getElementById('edit_id_tugas').value = id_tugas;
+        document.getElementById('edit_judul_tugas').value = judul_tugas;
+        document.getElementById('editTugasForm').style.display = 'block';
+        document.getElementById('tugasForm').style.display = 'none';
+    }
+
+    // Fungsi untuk menyembunyikan form edit
+    function hideEditForm() {
+        document.getElementById('editTugasForm').style.display = 'none';
+    }
+
+    // Fungsi untuk memicu dialog file pada form upload dan edit
+    document.querySelectorAll('.file-upload-browse').forEach((button, index) => {
+        button.addEventListener('click', function() {
+            const fileInput = index === 0 ? document.getElementById('file_tugas') : document.getElementById('edit_file_tugas');
+            fileInput.click();
+        });
+    });
+
+    // Menampilkan nama file pada form buat tugas
+    document.getElementById('file_tugas').addEventListener('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : '';
+        document.getElementById('file_upload_info').value = fileName;
+    });
+
+    // Menampilkan nama file pada form edit tugas
+    document.getElementById('edit_file_tugas').addEventListener('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : '';
+        document.getElementById('edit_file_upload_info').value = fileName;
+    });
+
+    // Toggle form pembuatan tugas
+    document.getElementById('toggleFormBtn').addEventListener('click', function() {
+        const form = document.getElementById('tugasForm');
+        if (form.style.display === "none") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    });
+</script>
+
+<%- include('../partials/foot') %>

@@ -1,0 +1,122 @@
+<%- include('../partials/head') %>
+<%- include('../partials/dosen-navbar2') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <%- include('../partials/messages') %>
+
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Info Tugas</h4>
+
+                        <!-- Informasi Tugas -->
+                        <div class="mb-4">
+                            <h5>Judul Tugas: <%= tugas.judul_tugas %></h5>
+                            <div class="card-description mb-3 mt-4">
+                                <% if (tugas.file_tugas) { %>
+                                    <% 
+                                    const fileExtension = tugas.file_tugas.split('.').pop().toLowerCase();
+                                    const isImage = ['jpg', 'jpeg', 'png'].includes(fileExtension);
+                                    const isPdf = fileExtension === 'pdf';
+                                    const isWord = ['doc', 'docx'].includes(fileExtension);
+                                    const fileName = tugas.file_tugas.split('/').pop(); // Ekstrak nama file dari path
+                                    %>
+                                    
+                                    <div class="d-flex align-items-center mb-3">
+                                        <% if (isImage) { %>
+                                            <img src="/Template/icon/img_icon.png" alt="Tugas Image" width="50px" class="me-3">
+                                        <% } else if (isPdf) { %>
+                                            <img src="/Template/icon/pdf_icon.png" alt="PDF Icon" width="50px" class="me-3">
+                                        <% } else if (isWord) { %>
+                                            <img src="/Template/icon/docx_icon.png" alt="Word Icon" width="50px" class="me-3">
+                                        <% } else { %>
+                                            <img src="/Template/icon/file_icon.png" alt="File Icon" width="50px" class="me-3">
+                                        <% } %>
+                                        <div>
+                                            <p class="mb-0"><strong>File yang diunggah:</strong></p>
+                                            <p class="mb-0"><%= fileName %></p>
+                                        </div>
+                                    </div>
+                                    <a href="<%= tugas.file_tugas %>" download class="btn btn-primary mt-3">Download File</a>
+                                <% } else { %>
+                                    <p>Belum ada file tugas yang diunggah.</p>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <!-- Daftar Pengumpulan Tugas Mahasiswa -->
+                        <h5>Daftar Pengumpulan Tugas Mahasiswa</h5>
+                        <% if (pengumpulanTugas && pengumpulanTugas.length > 0) { %>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Mahasiswa</th>
+                                            <th>File Tugas</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% pengumpulanTugas.forEach(function(p) { %>
+                                            <tr>
+                                                <td><%= p.nama_mahasiswa %></td>
+                                                <td>
+                                                    <% if (p.file_pengumpulan) { %>
+                                                        <div class="card-description mb-3 mt-4">
+                                                            <% 
+                                                            const fileNameParts = p.file_pengumpulan.split('.');
+                                                            const fileExtension = fileNameParts.length > 1 ? fileNameParts.pop().toLowerCase() : '';
+                                                            const isImage = ['jpg', 'jpeg', 'png'].includes(fileExtension);
+                                                            const isPdf = fileExtension === 'pdf';
+                                                            const isWord = ['doc', 'docx'].includes(fileExtension);
+                                                            const fileName = p.file_pengumpulan.split('/').pop(); // Ekstrak nama file dari path
+                                                            %>
+                                    
+                                                            <div class="d-flex align-items-center mb-3">
+                                                                <% if (isImage) { %>
+                                                                    <img src="/Template/icon/img_icon.png" alt="Tugas Image" width="50px" class="me-3">
+                                                                <% } else if (isPdf) { %>
+                                                                    <img src="/Template/icon/pdf_icon.png" alt="PDF Icon" width="50px" class="me-3">
+                                                                <% } else if (isWord) { %>
+                                                                    <img src="/Template/icon/docx_icon.png" alt="Word Icon" width="50px" class="me-3">
+                                                                <% } else { %>
+                                                                    <img src="/Template/icon/file_icon.png" alt="File Icon" width="50px" class="me-3">
+                                                                <% } %>
+                                                                <div>
+                                                                    <p class="mb-0"><%= fileName %></p>
+                                                                    <p class="mb-0 text-muted"><small>Extension: <%= fileExtension %></small></p>
+                                                                </div>
+                                                            </div>
+                                                            <a href="<%= p.file_pengumpulan %>" download >Download File</a>
+                                                        </div>
+                                                    <% } else { %>
+                                                        <span class="text-muted">Belum mengumpulkan</span>
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <% if (p.file_pengumpulan !== null) { %>
+                                                        <span class="badge badge-success">Terkumpul</span>
+                                                    <% } else { %>
+                                                        <span class="badge badge-warning">Belum Terkumpul</span>
+                                                    <% } %>
+                                                </td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } else { %>
+                            <p class="text-muted">Belum ada pengumpulan tugas dari mahasiswa.</p>
+                        <% } %>
+                        
+                        <a href="/dosen/detail_tugas/<%= tugas.id_jadwal %>" class="btn btn-light mt-3">Kembali</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/foot') %>

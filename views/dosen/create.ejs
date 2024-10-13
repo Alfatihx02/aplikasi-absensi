@@ -1,0 +1,43 @@
+<%- include('../partials/head') %>
+<div class="main-panel">
+    <div class="content-wrapper d-flex align-items-center auth px-0">
+      <div class="row w-100 mx-0">
+        <div class="col-md-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Form Dosen</h4>
+              <form class="forms-sample" action="/admin/dosen_store" method="POST">
+                <div class="form-group">
+                  <label for="inputNama">Nama</label>
+                  <input type="text" class="form-control" id="inputNama" placeholder="Nama Lengkap" name="Nama" required>
+                </div>
+                <div class="form-group">
+                  <label for="inputNIP">NIP</label>
+                  <input type="text" class="form-control" id="inputNIP" placeholder="NIP" name="NIP" required>
+                </div>
+                <div class="form-group">
+                    <label for="selectGender">Jenis Kelamin</label>
+                    <select class="form-select" id="selectGender" name="jenis_kelamin" required>
+                      <option value="laki-laki">Laki-Laki</option>
+                      <option value="perempuan">Perempuan</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail">Email</label>
+                  <input type="email" class="form-control" id="inputEmail" placeholder="Email" name="email" required>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword">Password</label>
+                  <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <a href="/admin/data_dosen" class="btn btn-secondary me-5">Kembali</a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%- include('../partials/foot') %>

@@ -1,0 +1,54 @@
+<%- include('../partials/head') %>
+<%- include('../partials/mhs-navbar') %>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <%- include('../partials/messages') %>
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title mb-0">Daftar Tugas</p>
+                        <div class="table-responsive">
+                            <table id="tugasTable" class="table table-striped table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th>Matakuliah</th>
+                                        <th>Judul Tugas</th>
+                                        <th>Detail Tugas</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (data.length > 0) { %>
+                                        <% data.forEach(function(tugas) { %>
+                                            <tr>
+                                                <td><%= tugas.nama_matakuliah %></td>
+                                                <td><%= tugas.judul_tugas %></td>
+                                                <td>
+                                                    <a href="/mahasiswa/detail-tugas/<%= tugas.id_tugas %>">Lihat Detail</a>
+                                                </td>
+                                                <td>
+                                                    <% if (tugas.file_pengumpulan) { %>
+                                                        <div class="badge badge-success">Terkumpul</div>
+                                                    <% } else { %>
+                                                        <div class="badge badge-warning">Belum Terkumpul</div>
+                                                    <% } %>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="4" class="text-center">Tidak ada tugas.</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/foot') %>

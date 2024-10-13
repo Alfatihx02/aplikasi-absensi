@@ -1,0 +1,44 @@
+<%- include('../partials/head') %>
+<%- include('../partials/dosen-navbar2') %>
+
+<div class="main-panel">
+    <%- include('../partials/messages') %>
+    <div class="content-wrapper">
+      <div class="row">
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title mb-3"><h2><%= data.nama_matakuliah %></h2></div>
+                    <div class="card-description mb-3 mt-4">
+                        <h4 class="text-dark">Ruang: <%= data.nama_ruangan %></h4>
+                    </div>
+                    <div class="card-description mb-3 mt-4">
+                        <h4 class="text-dark">Hari: <%= data.hari %>, <%= data.waktu_mulai %> - <%= data.waktu_selesai %> </h4>
+                    </div>
+        
+                    <% if (presensiStatus === 'dibuka') { %>
+                        <form action="/dosen/presensi/tutup/<%= data.id_jadwal %>" method="POST" id="presensi-form">
+                          <button type="submit" class="btn btn-danger">Tutup Presensi</button>
+                        </form>
+                      <% } else { %>
+                        <form action="/dosen/presensi/buka" method="POST" id="presensi-form">
+                          <input type="hidden" name="id_jadwal" value="<%= data.id_jadwal %>">
+                          <button type="submit" class="btn btn-secondary">Buka Presensi</button>
+                        </form>
+                      <% } %>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+</div>
+
+
+
+
+<%- include('../partials/foot') %>

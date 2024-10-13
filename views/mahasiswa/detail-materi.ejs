@@ -1,0 +1,65 @@
+<%- include('../partials/head') %>
+<%- include('../partials/mhs-navbar2') %>
+
+<div class="main-panel">
+    <%- include('../partials/messages') %>
+    <div class="content-wrapper mt-2">
+        <h2>Daftar Materi</h2>
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title mb-3"><h2><%= materi.keterangan %></h2></div>
+                        <div class="card-description mb-3 mt-4">
+                            <% if (materi && materi.length > 0) { %>
+                                <div class="row">
+                                <% for(let i = 0; i < materi.length; i++) { %>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="card">
+                                            <div class="card-body border">
+                                                <h4><%= materi[i].keterangan %></h4>
+                                                <% if (materi[i].file_materi) { %>
+                                                    <% 
+                                                    const fileName = materi[i].file_materi.split('/').pop();
+                                                    const fileExtension = fileName.split('.').pop().toLowerCase();
+                                                    const isImage = ['jpg', 'jpeg', 'png'].includes(fileExtension);
+                                                    const isPdf = fileExtension === 'pdf';
+                                                    const isWord = ['doc', 'docx'].includes(fileExtension);
+                                                    %>
+                    
+                                                    <% if (isImage) { %>
+                                                        <img src="/Template/icon/img_icon.png" alt="Image Icon" width="50px" height="60px"><p class="h4"><%= fileName %></p>
+                                                    <% } else if (isPdf) { %>
+                                                        <img src="/Template/icon/pdf_icon.png" alt="PDF Icon" width="50px" height="60px"><p class="h4"><%= fileName %></p>
+                                                    <% } else if (isWord) { %>
+                                                        <img src="/Template/icon/docx_icon.png" alt="Word Icon" width="50px" height="60px"><p class="h4"><%= fileName %></p>
+                                                    <% } else { %>
+                                                        <p>Tipe file tidak tersedia</p>
+                                                    <% } %>
+                                                    <br>
+                                                    <a href="<%= materi[i].file_materi %>" download class="btn btn-primary">Download</a>
+                                                <% } else { %>
+                                                    <p>Tidak ada file untuk materi ini</p>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% if ((i + 1) % 2 === 0 && i < materi.length - 1) { %>
+                                        </div><div class="row">
+                                    <% } %>
+                                <% } %>
+                                </div>
+                            <% } else { %>
+                                <p><%= message %></p> <!-- Tampilkan pesan jika materi kosong -->
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+</div>
+
+<%- include('../partials/foot') %>

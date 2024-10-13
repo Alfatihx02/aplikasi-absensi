@@ -1,0 +1,69 @@
+<%- include('../partials/head') %>
+<div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <%- include('../partials/dosen-navbar') %>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+            <%- include('../partials/messages') %>
+          <div class="row">
+          </div>
+          <div class="row">
+          </div>
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card position-relative">
+                    <div class="card-body">
+                        <p class="fs-30 mb-2">Jadwal Matakuliah</p>
+                        <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <!-- Menghasilkan slides berdasarkan data -->
+                                <% if (data && data.length > 0) { %>
+                                    <% for (let i = 0; i < data.length; i += 4) { %>
+                                        <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                                            <div class="row">
+                                                <% for (let j = i; j < i + 4 && j < data.length; j++) { %>
+                                                    <div class="col-md-3 mb-4 stretch-card transparent">
+                                                        <div class="card card-dark-blue">
+                                                                <div class="card-body">
+                                                                    <h3><%= data[j].nama_matakuliah %></h3>
+                                                                    <h4>Kelas: &nbsp <%= data[j].nama_kelas %></h4>
+                                                                    <h4>Ruangan: &nbsp <%= data[j].nama_ruangan %></h4>
+                                                                    <p><%= data[j].hari %>, <%= data[j].waktu_mulai %> - <%= data[j].waktu_selesai %></p>
+                                                                    <a href="/dosen/jadwal/<%= data[j].id_jadwal %>" class="text-white">Akses Kuliah</a>
+                                                                </div>
+                                                        </div>
+                                                    </div>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                <% } else { %>
+                                    <div class="carousel-item active">
+                                        <p class="text-center">Tidak ada jadwal tersedia.</p>
+                                    </div>
+                                <% } %>
+                            </div>
+            
+                            <!-- Kontrol carousel -->
+                            <a class="carousel-control-prev" href="#detailedReports" role="button" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </a>
+                            <a class="carousel-control-next" href="#detailedReports" role="button" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <%- include('../partials/foot') %>

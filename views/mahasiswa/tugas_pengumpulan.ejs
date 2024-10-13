@@ -1,0 +1,125 @@
+<%- include('../partials/head') %>
+<%- include('../partials/mhs-navbar2') %>
+
+<div class="main-panel mt-1">
+    <%- include('../partials/messages') %>
+    <div class="content-wrapper mt-2">
+        <div class="row">
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title mb-3">
+                        </div>
+                        <div class="card-description mb-3 mt-4">
+                            <h3 class="text-dark"><%= data.judul_tugas %> </h3>
+                        </div>
+                        <div class="card-description mb-3 mt-4">
+                            <% if (data.file_tugas) { %>
+                                <% 
+                                
+                                const fileExtension = data.file_tugas.split('.').pop().toLowerCase();
+                                const isImage = ['jpg', 'jpeg', 'png'].includes(fileExtension);
+                                const isPdf = fileExtension === 'pdf';
+                                const isWord = ['doc', 'docx'].includes(fileExtension);
+                                %>
+                                
+                                
+                                <% if (isImage) { %>
+                                    <img src="<%= data.file_tugas %>" alt="Tugas Image" style="max-width: 100%; height: auto;">
+                                <% } else if (isPdf) { %>
+                                    <img src="/Template/icon/pdf_icon.png" alt="PDF Icon" width="50px">
+                                <% } else if (isWord) { %>
+                                    <img src="/Template/icon/docx_icon.png" alt="Word Icon" width="50px">
+                                <% } else { %>
+                                    <h3>Tidak ada tugas</h3>
+                                <% } %>
+                                <br>
+                                <a href="<%= data.file_tugas %>" download class="btn btn-primary mt-2">Download File</a>
+                                
+                                
+                            <% } else { %>
+                                <p>Tidak ada file tugas yang diunggah.</p>
+                            <% } %>
+                        </div>
+                          
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 grid-margin stretch-card" id="tugasForm">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Form Pengumpulan Tugas</h4>
+                        <form action="/mahasiswa/upload_pengumpulan/<%= data.id_jadwal %>/" class="forms-sample" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="file_tugas">File Upload</label>
+                                <input type="file" name="file_tugas" class="file-upload-default" id="file_tugas" required>
+                                <div class="input-group col-xs-12 d-flex align-items-center">
+                                    <input type="text" class="form-control file-upload-info" id="file_upload_info" disabled placeholder="Upload File" />
+                                    <span class="input-group-append ms-2">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary me-2">Submit</button>
+                            <button type="button" class="btn btn-light" onclick="window.history.back();">Cancel</button>
+                        </form>
+                        
+                        <script>
+                            document.querySelector('.file-upload-browse').addEventListener('click', function() {
+                                document.getElementById('file_tugas').click();
+                            });
+                        
+                            document.getElementById('file_tugas').addEventListener('change', function() {
+                                const fileName = this.files[0] ? this.files[0].name : '';
+                                document.getElementById('file_upload_info').value = fileName;
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 grid-margin stretch-card" id="data-pengumpulan">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title"> <h3>Tugas Anda</h3></div>
+                        <div class="card-description">
+                            <% if (data.pengumpulan.file_pengumpulan) { %>
+                                <h4>File yang Diupload:</h4>
+                                <% 
+                                const fullPath = data.pengumpulan.file_pengumpulan;
+                                const fileName = fullPath.split('/').pop();
+                                const fileExtension = data.pengumpulan.file_pengumpulan.split('.').pop().toLowerCase();
+                                const isImage = ['jpg', 'jpeg', 'png'].includes(fileExtension);
+                                const isPdf = fileExtension === 'pdf';
+                                const isWord = ['doc', 'docx'].includes(fileExtension);
+                                %>
+
+                                <h4><%= fileName %></h4>
+                                
+                                <% if (isImage) { %>
+                                    <img src="<%= data.pengumpulan.file_pengumpulan %>" alt="Submitted Assignment" style="max-width: 100%; height: auto;">
+                                <% } else if (isPdf) { %>
+                                    <img src="/Template/icon/pdf_icon.png" alt="PDF Icon" width="50px">
+                                <% } else if (isWord) { %>
+                                    <img src="/Template/icon/docx_icon.png" alt="Word Icon" width="50px">
+                                <% } else { %>
+                                    <p>File type icon not available</p>
+                                <% } %>
+                                <br>
+                                <a href="<%= data.pengumpulan.file_pengumpulan %>" download class="btn btn-primary mt-2">Download</a>
+                            <% } else { %>
+                                <p>Anda belum mengumpulkan tugas.</p>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+</div>
+
+<%- include('../partials/foot') %>

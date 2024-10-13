@@ -1,0 +1,68 @@
+<%- include('../partials/head') %>
+<%- include('../partials/mhs-navbar2') %>
+
+<div class="main-panel">
+    <%- include('../partials/messages') %>
+    <div class="content-wrapper mt-2">
+        <h2>Daftar Tugas</h2>
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title mb-3"></h2></div>
+                        <div class="card-description mb-3 mt-4">
+                            <% if (rows && rows.length > 0) { %>
+                                <div class="row">
+                                <% for(let i = 0; i < rows.length; i++) { %>
+                                    <div class="col-md-6 mb-4" >
+                                        <div class="card">
+                                            <div class="card-body border" style="height: 100%;">
+                                                <h4>Tugas <%= i+1 %></h4>
+                                                <h4><%= rows[i].judul_tugas %></h4>
+                                                <% if (rows[i].file_tugas) { %>
+                                                    <% 
+                                                    const fileName = rows[i].file_tugas.split('/').pop();
+                                                    const fileExtension = fileName.split('.').pop().toLowerCase();
+                                                    const isImage = ['jpg', 'jpeg', 'png'].includes(fileExtension);
+                                                    const isPdf = fileExtension === 'pdf';
+                                                    const isWord = ['doc', 'docx'].includes(fileExtension);
+                                                    %>
+                    
+                                                    
+                                                    
+                                                    <% if (isImage) { %>
+                                                        <img src="/Template/icon/img_icon.png" alt="Image Icon" width="10%" height="10%"><p class="h4"><%= fileName %></p>
+                                                    <% } else if (isPdf) { %>
+                                                        <img src="/Template/icon/pdf_icon.png" alt="PDF Icon" width="10%" height="10%"><p class="h4"><%= fileName %></p>
+                                                    <% } else if (isWord) { %>
+                                                        <img src="/Template/icon/docx_icon.png" alt="Word Icon" width="10%" height="10%"><p class="h4"><%= fileName %></p>
+                                                    <% } else { %>
+                                                        <p>Tipe file tidak tersedia</p>
+                                                    <% } %>
+                                                    <br>
+                                                    <a href="/mahasiswa/detail-tugas/<%= rows[i].id_tugas %>" class="btn btn-secondary">Lihat tugas</a>
+                                                <% } else { %>
+                                                    <p>Tidak ada Tugas untuk materi ini</p>
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% if ((i + 1) % 2 === 0 && i < rows.length - 1) { %>
+                                        </div><div class="row">
+                                    <% } %>
+                                <% } %>
+                                </div>
+                            <% } else { %>
+                                <p>Belum ada tugas</p>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+</div>
+
+<%- include('../partials/foot') %>

@@ -1,0 +1,46 @@
+<%- include('../partials/head') %>
+<%- include('../partials/mhs-navbar') %>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <%- include('../partials/messages') %>
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title mb-0">Daftar Materi</p>
+                        <div class="table-responsive">
+                            <table id="materiTable" class="table table-striped table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th>Matakuliah</th>
+                                        <th>Judul Materi</th>
+                                        <th>File Materi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (data.length > 0) { %>
+                                        <% data.forEach(function(materi) { %>
+                                            <tr>
+                                                <td><%= materi.nama_matakuliah %></td>
+                                                <td><%= materi.keterangan %></td>
+                                                <td>
+                                                    <a href="/mahasiswa/download-materi/<%= materi.file_materi %>" download>Download</a>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="3" class="text-center">Tidak ada materi.</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/foot') %>

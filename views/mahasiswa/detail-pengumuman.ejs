@@ -1,0 +1,32 @@
+<%- include('../partials/head') %>
+<%- include('../partials/mhs-navbar2') %>
+
+<div class="main-panel">
+    <%- include('../partials/messages') %>
+    <div class="content-wrapper mt-2">
+        <h2>Pengumuman</h2>
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <% if (pengumuman && pengumuman.length > 0) { %>
+                            <% for( let i = 0; i < pengumuman.length; i++ ) { %>
+                                <div class="card-description mb-3 mt-4">
+                                        <h3><%= pengumuman[i].judul %></h3>
+                                        <p><%= pengumuman[i].keterangan %></p>
+                                </div>
+                                <% } %>
+                        <% }else{ %>
+                            <p>Belum ada pengumuman</p>
+                            <% } %>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+</div>
+
+<%- include('../partials/foot') %>

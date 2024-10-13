@@ -1,0 +1,87 @@
+<%- include('../partials/head') %>
+<%- include('../partials/mhs-navbar2') %>
+
+<div class="main-panel">
+    <%- include('../partials/messages') %>
+    <div class="content-wrapper mt-2">
+      <div class="row">
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title mb-3"><h2><%= data.nama_matakuliah %></h2></div>
+                    <div class="card-description mb-3 mt-4">
+                        <h4 class="text-dark">Ruang: <%= data.nama_ruangan %></h4>
+                    </div>
+                    <div class="card-description mb-3 mt-4">
+                        <h4 class="text-dark">Dosen: <%= data.Nama %></h4>
+                    </div>
+                    <div class="card-description mb-3 mt-4">
+                        <h4 class="text-dark">Hari: <%= data.hari %>, <%= data.waktu_mulai %> - <%= data.waktu_selesai %> </h4>
+                    </div>
+        
+                    <form action="/mahasiswa/presensi/submit/<%= data.id_jadwal %>" method="POST" id="presensi-form">
+                        <input type="hidden" name="id_jadwal" value="<%= data.id_jadwal %>">
+                        <input type="hidden" name="id_presensi" value="<%= id_presensi %>">
+                        <button type="submit" class="btn btn-primary" <%= (presensiStatus === 'ditutup' || presensiStatus === 'belum dibuka') ? 'disabled' : '' %>>Presensi
+    </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Riwayat Presensi</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tanggal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% historiPresensi.forEach(function(presensi) { %>
+                                    <tr>
+                                        <td><%= presensi.id_presensi %></td>
+                                        <td>
+                                            <%
+                                                const date = new Date(presensi.waktu_presensi);
+                                                
+                                                // Format tanggal tanpa waktu
+                                                const dateOptions = { 
+                                                    weekday: 'long', 
+                                                    year: 'numeric', 
+                                                    month: 'long', 
+                                                    day: 'numeric'
+                                                };
+                                                const formattedDate = date.toLocaleDateString('id-ID', dateOptions);
+                                                
+                                                // Format jam dan menit saja
+                                                const timeOptions = {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                    second: '2-digit',
+                                                    hour12: false
+                                                };
+                                                const formattedTime = date.toLocaleTimeString('id-ID', timeOptions);
+                                            %>
+                                            <%= formattedDate %> - <%= formattedTime %>
+                                        </td>
+                                        
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+</div>
+
+<%- include('../partials/foot') %>

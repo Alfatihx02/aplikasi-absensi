@@ -1,0 +1,67 @@
+<%- include('../partials/head') %>
+<div class="main-panel">
+    <div class="content-wrapper d-flex align-items-center auth px-0">
+      <div class="row w-100 mx-0">
+        <div class="col-md-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Form Jadwal</h4>
+              <form class="forms-sample" action="/admin/jadwal_store" method="POST">
+                <div class="form-group">
+                  <label for="exampleInputUsername1">Hari</label>
+                  <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Hari" name="hari">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputUsername1">Waktu Mulai</label>
+                  <input type="time" class="form-control" id="exampleInputUsername1" placeholder="Waktu Mulai" name="waktu_mulai">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputUsername1">Waku Mulai</label>
+                  <input type="time" class="form-control" id="exampleInputUsername1" placeholder="Waktu Mulai" name="waktu_selesai">
+                </div>
+                <div class="form-group">
+                    <label for="id_user">Id Matakuliah</label>
+                    <select class="form-select" id="exampleSelectIdUser" name="id_matakuliah">
+                      <% for( let i = 0; i < matakuliah.length; i++ ) { %>  
+                        <option value="<%= matakuliah[i].id_matakuliah %>"><%= matakuliah[i].nama_matakuliah %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                <div class="form-group">
+                    <label for="id_user">Id Kelas</label>
+                    <select class="form-select" id="exampleSelectIdUser" name="id_kelas">
+                      <% for( let i = 0; i < kelas.length; i++ ) { %>  
+                        <option value="<%= kelas[i].id_kelas %>"><%= kelas[i].nama_kelas %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                <div class="form-group">
+                    <label for="id_user">Id Dosen</label>
+                    <select class="form-select" id="exampleSelectIdUser" name="id_dosen">
+                      <% for( let i = 0; i < dosen.length; i++ ) { %>  
+                        <option value="<%= dosen[i].id_dosen %>"><%= dosen[i].Nama %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                <div class="form-group">
+                    <label for="id_user">Id Ruangan</label>
+                    <select class="form-select" id="exampleSelectIdUser" name="id_ruangan">
+                      <% for( let i = 0; i < ruangan.length; i++ ) { %>  
+                        <option value="<%= ruangan[i].id_ruangan %>"><%= ruangan[i].nama_ruangan %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <a href="/admin/data_jadwal" class="btn btn-secondary me-5">Kembali</a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:../../partials/_footer.html -->
+    <!-- partial -->
+  </div>
+
+<%- include('../partials/foot') %>

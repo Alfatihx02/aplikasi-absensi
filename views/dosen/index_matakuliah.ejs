@@ -1,0 +1,49 @@
+<%- include('../partials/head') %>
+<%- include('../partials/dosen-navbar') %>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <%- include('../partials/messages') %>
+      <div class="row">
+        <div class="col-md-10 grid-margin transparent">
+            <% for (let i = 0; i < data.length; i += 2) { %> <!-- Increment by 2 -->
+                <div class="row"> <!-- Start a new row every 2 items -->
+                  
+                  <!-- Card 1 -->
+                  <div class="col-md-6 mb-4 stretch-card transparent">
+                    <div class="card card-tale">
+                      <div class="card-body">
+                        <p class="fs-30 mb-4 text-black"><%= data[i].nama_matakuliah %></p>
+                        <p class="mb-2 text-black">Kelas: <%= data[i].nama_kelas %></p>
+                        <p class="mb-2 text-black">Ruang: <%= data[i].nama_ruangan %></p>
+                        <p class="mb-2 text-black"><%= data[i].hari %>, <%= data[i].waktu_mulai %> - <%= data[i].waktu_selesai %></p>
+                        <a href="/dosen/jadwal/<%= data[i].id_jadwal %>" class="text-black hover-cursor">Akses Kuliah</a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Card 2 (check if it exists) -->
+                  <% if (i + 1 < data.length) { %>
+                  <div class="col-md-6 mb-4 stretch-card transparent">
+                    <div class="card card-dark-blue">
+                      <div class="card-body">
+                        <p class="fs-30 mb-4">Matakuliah: <%= data[i + 1].nama_matakuliah %></p>
+                        <p class="mb-2">Kelas: <%= data[i + 1].nama_kelas %></p>
+                        <p class="mb-2">Ruang: <%= data[i + 1].nama_ruangan %></p>
+                        <p class="mb-2"><%= data[i + 1].hari %>, <%= data[i + 1].waktu_mulai %> - <%= data[i + 1].waktu_selesai %></p>
+                        <a href="/jadwal/<%= data[i + 1].id_jadwal %>" class="text-white">Akses Kuliah</a>
+                      </div>
+                    </div>
+                  </div>
+                  <% } %> <!-- End if -->
+                  
+                </div> <!-- End row -->
+            <% } %>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+<%- include('../partials/foot') %>

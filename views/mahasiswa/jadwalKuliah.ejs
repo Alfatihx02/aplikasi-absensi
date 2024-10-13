@@ -1,0 +1,51 @@
+<%- include('../partials/head') %>
+<%- include('../partials/mhs-navbar') %>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <%- include('../partials/messages') %>
+      <div class="row">
+        <h2 class="mb-4 mb-xl-4">Jadwal Kuliah Semester ini</h2>
+        <div class="col-md-10 grid-margin transparent">
+            <% for (let i = 0; i < data.length; i += 3) { %> <!-- Increment by 2 -->
+                <div class="row"> <!-- Start a new row every 2 items -->
+                  
+                  <!-- Card 1 -->
+                  <div class="col-md-6 mb-4 stretch-card transparent">
+                    <div class="card card-light-danger">
+                      <div class="card-body">
+                        <h3 class="mb-3"><%= data[i].nama_matakuliah %></h3>
+                        <h6 class="mb-2">Dosen: <%= data[i].Nama %></h6>
+                        <h6 class="mb-2">Kelas: <%= data[i].nama_kelas %></h6>
+                        <h6 class="mb-2">Ruang: <%= data[i].nama_ruangan %></h6>
+                        <h6 class="mb-2"><%= data[i].hari %>, <%= data[i].waktu_mulai %> - <%= data[i].waktu_selesai %></h6>
+                        <a href="/mahasiswa/jadwal/<%= data[i].id_jadwal %>" class="text-white hover-cursor">Akses Kuliah &nbsp<i class="mdi mdi-chevron-double-right"></i></h5></a>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Card 2 (check if it exists) -->
+                  <% if (i + 1 < data.length) { %>
+                  <div class="col-md-6 mb-4 stretch-card transparent">
+                    <div class="card card-dark-blue">
+                      <div class="card-body">
+                        <p class="fs-30 mb-4">Matakuliah: <%= data[i + 1].nama_matakuliah %></p>
+                        <p class="mb-2">Kelas: <%= data[i + 1].nama_kelas %></p>
+                        <p class="mb-2">Ruang: <%= data[i + 1].nama_ruangan %></p>
+                        <p class="mb-2"><%= data[i + 1].hari %>, <%= data[i + 1].waktu_mulai %> - <%= data[i + 1].waktu_selesai %></p>
+                        <a href="/jadwal/<%= data[i + 1].id_jadwal %>" class="text-white">Akses Kuliah</a>
+                      </div>
+                    </div>
+                  </div>
+                  <% } %> <!-- End if -->
+                  
+                </div> <!-- End row -->
+            <% } %>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+<%- include('../partials/foot') %>

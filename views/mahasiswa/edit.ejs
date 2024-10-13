@@ -1,0 +1,60 @@
+<%- include('../partials/head') %>
+<div class="main-panel">
+    <div class="content-wrapper d-flex align-items-center auth px-0">
+      <div class="row w-100 mx-0">
+        <div class="col-md-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Form Mahasiswa</h4>
+              <form class="forms-sample" action="/admin/mhs_update/<%= id_mhs %>" method="POST">
+                <div class="form-group">
+                  <label for="exampleInputUsername1">Nama</label>
+                  <input type="text" class="form-control" id="exampleInputUsername1" placeholder="Nama Mahasiswa" name="Nama" value="<%= Nama %>">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputUsername1">NRP</label>
+                  <input type="text" class="form-control" id="exampleInputUsername1" placeholder="NRP" name="NRP" value="<%= NRP %>">
+                </div>
+                <div class="form-group">
+                    <label for="exampleSelectGender">Jenis Kelamin</label>
+                    <select class="form-select" id="exampleSelectGender" name="jenis_kelamin">
+                      <option value="laki-laki">Laki-Laki</option>
+                      <option value="perempuan">Perempuan</option>
+                    </select>
+                  </div>
+                <div class="form-group">
+                    <label for="id_user">Id User</label>
+                    <select class="form-select" id="exampleSelectIdUser" name="id_users">
+                      <% for( let i = 0; i < data.length; i++ ) { %>  
+                        <option value="<%= data[i].id_users %>"><%= data[i].email %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                <div class="form-group">
+                    <label for="id_user">Id Kelas</label>
+                    <select class="form-select" id="exampleSelectIdUser" name="id_kelas">
+                      <% for( let i = 0; i < kelas.length; i++ ) { %>  
+                        <option value="<%= kelas[i].id_kelas %>"><%= kelas[i].nama_kelas %></option>
+                      <% } %>
+                    </select>
+                  </div>
+                <button type="submit" class="btn btn-primary me-2">Submit</button>
+                <a href="/admin/data_mahasiswa" class="btn btn-secondary me-5">Kembali</a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:../../partials/_footer.html -->
+    <footer class="footer">
+<div class="d-sm-flex justify-content-center justify-content-sm-between">
+<span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2023. Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+<span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ms-1"></i></span>
+</div>
+</footer>
+    <!-- partial -->
+  </div>
+
+<%- include('../partials/foot') %>

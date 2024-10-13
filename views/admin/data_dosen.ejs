@@ -1,0 +1,62 @@
+<%- include('../partials/head') %>
+<div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+     <%- include('../partials/admin-navbar') %>
+
+      <!-- partial -->
+      <div class="main-panel">
+        <%- include('../partials/messages') %>
+        <div class="content-wrapper">
+          <div class="row">
+            
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Tabel Dosen</h4>
+                  <a href="/admin/dosen_create" class="btn btn-rounded btn-primary">Tambah Dosen</a>
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Nama</th>
+                          <th>NIP</th>
+                          <th>Jenis Kelamin</th>
+                          <th>Email</th>
+                          <th>ID User</th>
+                          <th>Aksi</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% for( let i = 0; i < rows.length; i++ ) { %>
+                        
+                            <tr>
+                              <td><%= i+1 %></td>
+                              <td><%= rows[i].Nama %></td>
+                              <td><%= rows[i].NIP %></td>
+                              <td><%= rows[i].jenis_kelamin %></td>
+                              <td><%= rows[i].email %></td>
+                              <td><%= rows[i].id_users %></td>
+                              <td>
+                                <a href="/admin/dosen_edit/<%= rows[i].id_dosen %>" class="btn btn-rounded btn-warning">Edit</a>
+                                <a href="/admin/dosen_delete/<%= rows[i].id_dosen %>" class="btn btn-rounded btn-danger">Hapus</a>
+                              </td>
+                            </tr>
+                        <% } %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:../../partials/_footer.html -->
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+<%- include('../partials/foot') %>

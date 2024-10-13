@@ -1,0 +1,154 @@
+<%- include('../partials/head') %>
+<%- include('../partials/dosen-navbar2') %>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <%- include('../partials/messages') %>
+        <div class="row">
+            <!-- Card daftar materi -->
+            <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Daftar Materi untuk <%= data.nama_matakuliah %></p>
+
+                        <% if (materi && materi.length > 0) { %>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>File Materi</th>
+                                            <th>Keterangan</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% materi.forEach(function(m) { %>
+                                            <tr>
+                                                <td>
+                                                    <a href="<%= m.file_materi %>" download="<%= m.file_materi.split('/').pop() %>">Download File</a>
+                                                </td>
+                                                <td><%= m.keterangan %></td>
+                                                <td>
+                                                    <a href="#" class="btn btn-warning text-light" onclick="openEditForm('<%= m.id_materi %>', '<%= m.keterangan %>')">Edit</a>
+                                                    <form action="/dosen/materi/delete/<%= m.id_materi %>" method="POST" style="display:inline;">
+                                                        <button type="submit" class="btn btn-danger text-light" onclick="return confirm('Apakah Anda yakin ingin menghapus materi ini?')">Hapus</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } else { %>
+                            <p class="text-muted">Belum ada materi yang di upload</p>
+                        <% } %>
+
+                        <!-- Tombol untuk membuat materi -->
+                        <button id="toggleFormBtn" class="btn btn-primary mt-3">Upload Materi</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form upload materi -->
+            <div class="col-md-6 grid-margin stretch-card" id="materiForm" style="display: none;">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Form Pembuatan Materi</h4>
+                        <form action="/dosen/upload_materi/<%= data.id_jadwal %>" class="forms-sample" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="keterangan">Keterangan Materi</label>
+                                <input type="text" name="keterangan" class="form-control" id="keterangan" placeholder="Masukkan keterangan materi" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="file_materi">File Upload</label>
+                                <input type="file" name="file_materi" class="file-upload-default" id="file_materi" required>
+                                <div class="input-group col-xs-12 d-flex align-items-center">
+                                    <input type="text" class="form-control file-upload-info" id="file_upload_info" disabled placeholder="Upload File" />
+                                    <span class="input-group-append ms-2">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary me-2">Submit</button>
+                            <button type="button" class="btn btn-light" onclick="window.history.back();">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form edit materi -->
+            <div class="col-md-6 grid-margin stretch-card" id="editMateriForm" style="display: none;">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Form Edit Materi</h4>
+                        <form action="/dosen/materi/update/<%= materi.id_materi %>" id="formEditMateri" class="forms-sample" method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="edit_keterangan">Keterangan Materi</label>
+                                <input type="text" name="keterangan" class="form-control" id="edit_keterangan" placeholder="Masukkan keterangan materi" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="edit_file_materi">File Upload</label>
+                                <input type="file" name="file_materi" class="file-upload-default" id="edit_file_materi">
+                                <div class="input-group col-xs-12 d-flex align-items-center">
+                                    <input type="text" class="form-control file-upload-info" id="edit_file_upload_info" disabled placeholder="Upload File" />
+                                    <span class="input-group-append ms-2">
+                                        <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary me-2">Update</button>
+                            <button type="button" class="btn btn-light" onclick="closeEditForm()">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Menghubungkan tombol browse dengan input file
+    document.querySelectorAll('.file-upload-browse').forEach(button => {
+        button.addEventListener('click', function() {
+            const inputId = this.closest('form').querySelector('.file-upload-default').id;
+            document.getElementById(inputId).click(); // Memicu dialog file
+        });
+    });
+
+    // Menampilkan nama file yang dipilih
+    document.getElementById('file_materi').addEventListener('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : '';
+        document.getElementById('file_upload_info').value = fileName;
+    });
+
+    document.getElementById('edit_file_materi').addEventListener('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : '';
+        document.getElementById('edit_file_upload_info').value = fileName;
+    });
+
+    // Tampilkan dan sembunyikan form upload materi
+    document.getElementById('toggleFormBtn').addEventListener('click', function() {
+        const form = document.getElementById('materiForm');
+        form.style.display = form.style.display === "none" ? "block" : "none";
+    });
+
+    // Fungsi membuka form edit materi
+    function openEditForm(idMateri, keterangan) {
+        document.getElementById('editMateriForm').style.display = 'block';
+        document.getElementById('edit_keterangan').value = keterangan;
+        // Set action form edit materi
+        document.getElementById('formEditMateri').action = `/dosen/materi/update/${idMateri}`;
+    }
+
+    // Fungsi menutup form edit materi
+    function closeEditForm() {
+        document.getElementById('editMateriForm').style.display = 'none';
+    }
+</script>
+
+<%- include('../partials/foot') %>
