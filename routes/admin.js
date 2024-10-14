@@ -216,6 +216,7 @@ router.get('/data_jadwal', ensureAuthenticated, async (req, res, next) => {
 
     let Data = await Model_Users.getId(id);
     let jadwal = await Model_Jadwal.getDetailJadwal();
+    console.log('jadwal: ', jadwal)
 
     if(Data.length > 0){
       res.render('admin/data_jadwal', {
@@ -480,7 +481,7 @@ router.get('/jadwal_edit/:id_jd', ensureAuthenticated, async (req, res, next) =>
     let allRuangan = await Model_Ruangan.getAll();
     if(Data.length > 0){
       const id_jd = req.params.id_jd;
-      let rows = await Model_Jadwal.getId(id_jd);
+      let rows = await Model_Jadwal.getIdJadwal(id_jd);
       res.render('jadwal/edit',{
         title: 'Edit Jadwal',
         id_jd: rows[0].id_jadwal,

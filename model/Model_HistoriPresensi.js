@@ -73,12 +73,12 @@ class Model_HistoriPresensi {
     }
     static async getByIdPresensi(id){
         return new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM histori_presensi WHERE id_presensi = ?', [id], (err, rows) => {
+            connection.query('SELECT hp.*, m.Nama as nama_mahasiswa, m.Nrp FROM histori_presensi hp JOIN mahasiswa m ON hp.id_mahasiswa = m.id_mahasiswa WHERE id_presensi = ?', [id], (err, rows) => {
                 if(err) {
                     reject(err);
                 } else {
                     resolve(rows);
-                    console.log(rows);
+                    console.log('Data presensi mhs: ',rows);
                 }
             })
         })

@@ -22,8 +22,9 @@
                     <form action="/mahasiswa/presensi/submit/<%= data.id_jadwal %>" method="POST" id="presensi-form">
                         <input type="hidden" name="id_jadwal" value="<%= data.id_jadwal %>">
                         <input type="hidden" name="id_presensi" value="<%= id_presensi %>">
-                        <button type="submit" class="btn btn-primary" <%= (presensiStatus === 'ditutup' || presensiStatus === 'belum dibuka') ? 'disabled' : '' %>>Presensi
-    </button>
+                        <button type="submit" class="btn btn-primary" <%= (presensiStatus !== 'dibuka' || sudahPresensi) ? 'disabled' : '' %>>
+                            <%= sudahPresensi ? 'Sudah Presensi' : 'Presensi' %>
+                        </button>
                     </form>
                 </div>
             </div>

@@ -34,7 +34,7 @@ class Model_Dosen {
                 } else if (rows.length === 0) {
                     reject(new Error('Dosen not found'));
                 } else {
-                    resolve(rows[0].id_dosen); // return id_dosen
+                    resolve(rows[0].id_dosen);
                 }
             });
         });

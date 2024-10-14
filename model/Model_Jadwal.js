@@ -86,6 +86,18 @@ class Model_Jadwal {
                 if(err) {
                     reject(err);
                 } else {
+                    resolve(rows[0]);
+                    console.log(rows);
+                }
+            })
+        })
+    }
+    static async getIdJadwal(id){
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT j.*, mk.nama_matakuliah,  r.nama_ruangan, d.Nama, d.NIP FROM jadwal j JOIN matakuliah mk ON j.id_matakuliah = mk.id_matakuliah JOIN ruangan r ON r.id_ruangan = j.id_ruangan JOIN dosen d ON j.id_dosen = d.id_dosen WHERE j.id_jadwal = ?', [id], (err, rows) => {
+                if(err) {
+                    reject(err);
+                } else {
                     resolve(rows);
                     console.log(rows);
                 }
@@ -142,7 +154,7 @@ class Model_Jadwal {
                 if(err) {
                     reject(err);
                 } else {
-                    resolve(rows);
+                    resolve(rows[0]);
                     console.log(rows[0]);
                 }
             })

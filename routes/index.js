@@ -153,6 +153,20 @@ router.get('/logout', function(req, res) {
   res.redirect('/login');
 });
 
+router.get('/delete/:id', ensureAuthenticated, async(req, res) => {
+  try {
+    let id = req.params.id
+    await Model_Users.Delete(id)
+  
+    req.flash('success','berhasil menghapus user');
+    res.redirect('/admin/data_user');
+    
+  } catch (error) {
+    req.flash('error','Terjadi kesalahan pada fungsi');
+    res.redirect('/admin/data_user');
+  }
+})
+
 
 
 module.exports = router;

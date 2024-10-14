@@ -30,8 +30,8 @@
                                                 <td><%= m.keterangan %></td>
                                                 <td>
                                                     <a href="#" class="btn btn-warning text-light" onclick="openEditForm('<%= m.id_materi %>', '<%= m.keterangan %>')">Edit</a>
-                                                    <form action="/dosen/materi/delete/<%= m.id_materi %>" method="POST" style="display:inline;">
-                                                        <button type="submit" class="btn btn-danger text-light" onclick="return confirm('Apakah Anda yakin ingin menghapus materi ini?')">Hapus</button>
+                                                    <form action="/dosen/materi/delete/<%= m.id_materi %>" style="display:inline;">
+                                                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus materi ini?')">Hapus</button>
                                                     </form>
                                                 </td>
                                             </tr>

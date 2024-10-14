@@ -42,14 +42,13 @@ class Model_Presensi {
 
     static async getLastPertemuanByJadwal(id_jadwal) {
         return new Promise((resolve, reject) => {
-            // Query untuk mendapatkan nilai pertemuan terakhir berdasarkan id_jadwal
             connection.query('SELECT MAX(pertemuan) AS pertemuan_terakhir FROM presensi WHERE id_jadwal = ?', 
                 [id_jadwal], 
                 (err, rows) => {
                     if (err) {
                         reject(err);
                     } else {
-                        resolve(rows[0].pertemuan_terakhir); // Kembalikan pertemuan terakhir atau null jika tidak ada
+                        resolve(rows[0].pertemuan_terakhir);
                     }
                 }
             );
@@ -105,6 +104,37 @@ class Model_Presensi {
                 } else {
                     resolve(rows);
                     console.log(rows[0]);
+                }
+            })
+        })
+    }
+
+    static async getAllByIdJadwal(id_jadwal) {
+        return new Promise((resolve, reject) => {
+          connection.query(
+            'SELECT * FROM presensi WHERE id_jadwal = ? ORDER BY waktu_dibuka DESC',
+            [id_jadwal],
+            (err, rows) => {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(rows);
+              }
+            }
+          );
+        });
+      }
+
+    static async getIdByIdJadwal(id){
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT id_presensi FROM presensi WHERE id_jadwal = ?', [id], (err, rows) => {
+                if(err) {
+                    reject(err);
+                }else if(rows.length === 0) {
+                    resolve(null);
+                } else {
+                    resolve(rows.length > 0 ? rows[0].id_presensi : null);
+                    console.log(rows);
                 }
             })
         })

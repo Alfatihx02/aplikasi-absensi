@@ -27,6 +27,23 @@ class Model_Mahasiswa {
         });
     }
 
+    static async getMhsByIdjadwal(id_jadwal){
+        return new Promise((resolve, reject) => {
+            connection.query(`SELECT DISTINCT m.Nama as nama_mahasiswa, m.Nrp, m.jenis_kelamin 
+                FROM mahasiswa m 
+                JOIN kelas k ON m.id_kelas = k.id_kelas 
+                JOIN jadwal j ON j.id_kelas = k.id_kelas 
+                WHERE j.id_jadwal = ?`,[id_jadwal], (err, rows) => {
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(rows);
+                    console.log('Data mahasiswa: ',rows);
+                }
+            });
+        });
+    }
+
 
     static async getAllPresensiMhs(){
         return new Promise((resolve, reject) => {
@@ -53,6 +70,8 @@ class Model_Mahasiswa {
             })
         });
     }
+
+
 
     static async getByNRP(nrp) {
         return new Promise((resolve, reject) => {

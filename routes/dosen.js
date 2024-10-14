@@ -11,6 +11,8 @@ const Model_Tugas = require('../model/Model_Tugas');
 const Model_Materi = require('../model/Model_Materi');
 const Model_Pengumuman = require('../model/Model_Pengumuman');
 const Model_Pengumpulan = require('../model/Model_Pengumpulan');
+const Model_HistoriPresensi = require('../model/Model_HistoriPresensi');
+const Model_Mahasiswa = require('../model/Model_Mahasiswa');
 
 function ensureAuthenticated(req, res, next) {
   if (req.session.userId && req.session.level_users == 2) {
@@ -114,6 +116,7 @@ router.get('/jadwal/:id_jadwal', ensureAuthenticated, async (req, res, next) => 
 
     let idDosen = await Model_Dosen.getIdDosenFromUserId(id);
     let dosenJadwal = await Model_Jadwal.getId(id_jadwal);
+    let dataMhs = await Model_Mahasiswa.getMhsByIdjadwal(id_jadwal);
 
     if (dosenJadwal.id_dosen !== idDosen) {
       req.flash('error', 'Anda tidak memiliki akses ke jadwal ini.');
@@ -123,11 +126,26 @@ router.get('/jadwal/:id_jadwal', ensureAuthenticated, async (req, res, next) => 
     let openPresensi = await Model_Presensi.getOpenPresensiByJadwal(id_jadwal);
     let presensiStatus = openPresensi ? 'dibuka' : 'belum dibuka';
 
+    // Fetch all presensi records for this jadwal
+    let allPresensi = await Model_Presensi.getAllByIdJadwal(id_jadwal);
+
+    let presensiMhs = [];
+    if (openPresensi) {
+      presensiMhs = await Model_HistoriPresensi.getByIdPresensi(openPresensi.id_presensi);
+    } else if (allPresensi.length > 0) {
+      // If no open presensi, get the latest closed presensi
+      let latestPresensi = allPresensi[allPresensi.length - 1];
+      presensiMhs = await Model_HistoriPresensi.getByIdPresensi(latestPresensi.id_presensi);
+    }
+
     res.render('dosen/index_jadwal', {
       page: 'kuliah',
       data: dosenJadwal,
       presensiStatus: presensiStatus,
-      id_presensi: openPresensi ? openPresensi.id_presensi : null
+      id_presensi: openPresensi ? openPresensi.id_presensi : null,
+      rows: presensiMhs,
+      mhs: dataMhs,
+      allPresensi: allPresensi,
     });
 
   } catch (error) {
@@ -136,8 +154,63 @@ router.get('/jadwal/:id_jadwal', ensureAuthenticated, async (req, res, next) => 
     res.redirect('/dosen/');
   }
 });
-// Routing untuk Buka Presensi
-router.post('/presensi/buka', ensureAuthenticated, async (req, res) => {
+
+router.get('/histori-presensi/:id_presensi', ensureAuthenticated, async (req, res) => {
+  try {
+    const id_presensi = req.params.id_presensi;
+    const historiPresensi = await Model_HistoriPresensi.getByIdPresensi(id_presensi);
+    res.json(historiPresensi);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while fetching data' });
+  }
+});
+
+// router.get('/jadwal/:id_jadwal', ensureAuthenticated, async (req, res, next) => {
+//   try {
+//     let id = req.session.userId;
+//     let id_jadwal = req.params.id_jadwal;
+
+//     let idDosen = await Model_Dosen.getIdDosenFromUserId(id);
+//     let dosenJadwal = await Model_Jadwal.getId(id_jadwal);
+//     let id_presensi = await Model_Presensi.getIdByIdJadwal(id_jadwal);
+//     console.log('id presensi: ', id_presensi)
+//     let dataMhs = await Model_Mahasiswa.getMhsByIdjadwal(id_jadwal);
+//     let dataPresensiMhs = await Model_HistoriPresensi.getByIdPresensi(id_presensi);
+//     console.log('mhs data: ', dataPresensiMhs);
+//     console.log('mahasiswa data: ',dataMhs);
+//     let presensiMhs = [];
+//     if (id_presensi) {
+//     presensiMhs = await Model_HistoriPresensi.getByIdPresensi(id_presensi);
+//     }
+
+//     if (dosenJadwal.id_dosen !== idDosen) {
+//       req.flash('error', 'Anda tidak memiliki akses ke jadwal ini.');
+//       return res.redirect('/dosen/');
+//     }
+
+
+//     let openPresensi = await Model_Presensi.getOpenPresensiByJadwal(id_jadwal);
+//     let presensiStatus = openPresensi ? 'dibuka' : 'belum dibuka';
+
+//     res.render('dosen/index_jadwal', {
+//       page: 'kuliah',
+//       data: dosenJadwal,
+//       presensiStatus: presensiStatus,
+//       id_presensi: openPresensi ? openPresensi.id_presensi : null,
+//       rows: presensiMhs,
+//       mhs: dataMhs,
+//       prMhs: dataPresensiMhs,
+//     });
+
+//   } catch (error) {
+//     console.error(error);
+//     req.flash('error', 'Terjadi kesalahan saat mengambil data');
+//     res.redirect('/dosen/');
+//   }
+// });
+
+router.post('/presensi/buka', ensureAuthenticated, async (req, res) => { ///..Routing presensi
   try {
     const { id_jadwal } = req.body;
 
@@ -364,6 +437,7 @@ router.get('/info-tugas/:id_tugas', ensureAuthenticated, async (req, res, next) 
       }
 
       const jadwal = await Model_Jadwal.getByIdTugas(id_tugas);
+      console.log('data: ',jadwal);
 
       // Ambil data pengumpulan tugas mahasiswa berdasarkan id_tugas
       const pengumpulanTugas = await Model_Pengumpulan.getByIdTugas(id_tugas);
@@ -395,7 +469,7 @@ router.get('/materi/:id_jadwal', ensureAuthenticated, async (req, res) => {
     console.log('PPP: ',jadwal);
     const materi = await Model_Materi.getByIdJadwal(id_jadwal);
     console.log('mmm: ', materi);
-    res.render('dosen/create_materi', { data: jadwal, materi });
+    res.render('dosen/detail_materi', { data: jadwal, materi });
   } catch (error) {
     console.error('Error:', error);
     req.flash('error', 'Terjadi kesalahan saat mengambil data materi');

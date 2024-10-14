@@ -150,50 +150,53 @@ router.get('/pengumuman', ensureAuthenticated, async (req, res) => {
 
 
 
-  router.get('/jadwal/:id_jadwal', ensureAuthenticated, async (req, res, next) => {
-    try {
-      let id = req.session.userId;
-      let id_jadwal = req.params.id_jadwal;
-  
-      let idMahasiswa = await Model_Mahasiswa.getIdFromUserId(id);
-      let mahasiswaJadwal = await Model_Jadwal.getById(id_jadwal);
-  
-      // Check if the mahasiswa has access to this jadwal
-      let jadwalMahasiswa = await Model_Jadwal.getByIdMahasiswa(idMahasiswa);
-      if (!jadwalMahasiswa.some(jadwal => jadwal.id_jadwal === parseInt(id_jadwal))) {
-        req.flash('error', 'Anda tidak memiliki akses ke jadwal ini.');
-        return res.redirect('/mahasiswa/');
-      }
-  
-      let presensiStatus = await Model_Presensi.getPresensiStatusByJadwal(id_jadwal);
-      let id_presensi = null;
-  
-      if (presensiStatus === 'dibuka') {
-        const activePresensi = await Model_Presensi.getActivatePresensiByJadwal(id_jadwal);
-        if (activePresensi) {
-          id_presensi = activePresensi.id_presensi;
-        } else {
-          presensiStatus = 'belum dibuka';
-        }
-      }
-  
-      // Get histori presensi for this mahasiswa and jadwal
-      const historiPresensi = await Model_HistoriPresensi.getByMahasiswaAndJadwal(idMahasiswa, id_jadwal);
-  
-      res.render('mahasiswa/detail-jadwal', {
-        data: mahasiswaJadwal,
-        presensiStatus: presensiStatus,
-        id_presensi: id_presensi,
-        historiPresensi: historiPresensi,
-      });
-  
-    } catch (error) {
-      console.error(error);
-      req.flash('error', 'Terjadi kesalahan saat mengambil data');
-      res.redirect('/mahasiswa/');
-    }
-  });
+router.get('/jadwal/:id_jadwal', ensureAuthenticated, async (req, res, next) => {
+  try {
+    let id = req.session.userId;
+    let id_jadwal = req.params.id_jadwal;
 
+    let idMahasiswa = await Model_Mahasiswa.getIdFromUserId(id);
+    let mahasiswaJadwal = await Model_Jadwal.getById(id_jadwal);
+
+    // Check if the mahasiswa has access to this jadwal
+    let jadwalMahasiswa = await Model_Jadwal.getByIdMahasiswa(idMahasiswa);
+    if (!jadwalMahasiswa.some(jadwal => jadwal.id_jadwal === parseInt(id_jadwal))) {
+      req.flash('error', 'Anda tidak memiliki akses ke jadwal ini.');
+      return res.redirect('/mahasiswa/');
+    }
+
+    // Get active presensi for this jadwal
+    const activePresensi = await Model_Presensi.getActivatePresensiByJadwal(id_jadwal);
+    let presensiStatus = 'belum dibuka';
+    let id_presensi = null;
+    let sudahPresensi = false;
+
+    if (activePresensi) {
+      id_presensi = activePresensi.id_presensi;
+      presensiStatus = activePresensi.status;
+      
+      // Check if mahasiswa has already done presensi for this active presensi
+      const existingPresensi = await Model_HistoriPresensi.getByMahasiswaAndPresensi(idMahasiswa, id_presensi);
+      sudahPresensi = !!existingPresensi;
+    }
+
+    // Get histori presensi for this mahasiswa and jadwal
+    const historiPresensi = await Model_HistoriPresensi.getByMahasiswaAndJadwal(idMahasiswa, id_jadwal);
+
+    res.render('mahasiswa/detail-jadwal', {
+      data: mahasiswaJadwal,
+      presensiStatus: presensiStatus,
+      id_presensi: id_presensi,
+      historiPresensi: historiPresensi,
+      sudahPresensi: sudahPresensi
+    });
+
+  } catch (error) {
+    console.error(error);
+    req.flash('error', 'Terjadi kesalahan saat mengambil data');
+    res.redirect('/mahasiswa/');
+  }
+});
   
   router.post('/presensi/submit/:id_jadwal', ensureAuthenticated, async (req, res) => {
     try {
