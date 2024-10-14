@@ -9,7 +9,6 @@ var session = require('express-session');
 const MemoryStore = require('session-memory-store')(session);
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var dosenRouter = require('./routes/dosen');
 var mahasiswaRouter = require('./routes/mahasiswa');
@@ -49,7 +48,6 @@ app.use(session({
 app.use(flash());
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 app.use('/dosen', dosenRouter,);
 app.use('/mahasiswa', mahasiswaRouter);

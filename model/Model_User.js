@@ -14,6 +14,19 @@ class Model_Users {
         });
     }
 
+    static async count(){
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT COUNT(*) as count FROM users', (err, rows) => {
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(rows[0].count);
+                    console.log(rows);
+                }
+            });
+        });
+    }
+
     static async Store(Data){
         return new Promise((resolve, reject) => {
             connection.query('INSERT INTO users SET ?', Data, function(err, result){
@@ -34,6 +47,18 @@ class Model_Users {
                     reject(err);
                 } else {
                     resolve(result);
+                }
+            })
+        })
+    }
+
+    static async findByEmail(email) {
+        return new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM users WHERE email = ?', [email], function(err, result){
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result[0]);
                 }
             })
         })
