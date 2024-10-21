@@ -64,7 +64,6 @@ class Model_Users {
         })
     }
 
-
     static async getId(id){
         return new Promise((resolve, reject) => {
             connection.query('SELECT * FROM users WHERE id_users = ?', [id], (err, rows) => {
@@ -80,7 +79,8 @@ class Model_Users {
     
     static async getIdDosen(idDosen){
         return new Promise((resolve, reject) => {
-            connection.query('SELECT u.*, d.* FROM users u JOIN dosen d ON u.id_users = d.id_users WHERE d.id_dosen = ?', [idDosen], (err, rows) => {
+            connection.query(`SELECT u.*, d.* FROM users u JOIN dosen d ON u.id_users = d.id_users WHERE d.id_dosen = ?`, 
+                [idDosen], (err, rows) => {
                 if(err) {
                     reject(err);
                 } else {
@@ -93,12 +93,13 @@ class Model_Users {
 
     static async getOpenPresensiByDosen(id_dosen) {
         return new Promise((resolve, reject) => {
-          connection.query(`
-            SELECT p.* FROM presensi p JOIN jadwal j ON p.id_jadwal = j.id_jadwal JOIN dosen d ON j.id_dosen = d.id_dosen JOIN users u ON d.id_users = u.id_users WHERE p.status = 'dibuka' AND u.id_users = ?`, [id_dosen], (err, rows) => {
+          connection.query(`SELECT p.* FROM presensi p JOIN jadwal j ON p.id_jadwal = j.id_jadwal 
+            JOIN dosen d ON j.id_dosen = d.id_dosen JOIN users u ON d.id_users = u.id_users 
+            WHERE p.status = 'dibuka' AND u.id_users = ?`, [id_dosen], (err, rows) => {
               if (err) {
                 reject(err);
               } else {
-                resolve(rows); // Mengembalikan presensi yang masih terbuka
+                resolve(rows);
               }
             });
         });
@@ -118,7 +119,6 @@ class Model_Users {
         });
     }
     
-
     static async Delete(id) {
         return new Promise((resolve, reject) => {
             connection.query('DELETE FROM users WHERE id_users = ?', [id], function(err, result){

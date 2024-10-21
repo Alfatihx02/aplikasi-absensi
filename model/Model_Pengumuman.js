@@ -73,7 +73,6 @@ class Model_Pengumuman {
         });
     }
     
-
     static async Update(id, Data) {
         return new Promise((resolve, reject) => {
             connection.query('UPDATE pengumuman SET ? WHERE id_pengumuman = ?', [Data, id], function(err, result){

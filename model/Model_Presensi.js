@@ -29,7 +29,10 @@ class Model_Presensi {
 
     static async getByIdJadwalAndIdMahasiswa(id_j, id_mhs){
         return new promiseImpl((resolve, reject) =>{
-            connection.query('SELECT p.pertemuan, hp.waktu_presensi FROM histori_presensi hp JOIN presensi p ON hp.id_presensi = p.id_presensi JOIN mahasiswa m ON hp.id_mahasiswa = m.id_mahasiswa WHERE hp.id_presensi = ? AND hp.id_mahasiswa = ? ',[id_j, id_mhs], (err, rows)=>{
+            connection.query(`SELECT p.pertemuan, hp.waktu_presensi FROM histori_presensi hp 
+                JOIN presensi p ON hp.id_presensi = p.id_presensi JOIN mahasiswa m 
+                ON hp.id_mahasiswa = m.id_mahasiswa WHERE hp.id_presensi = ? AND hp.id_mahasiswa = ? `,
+                [id_j, id_mhs], (err, rows)=>{
                 if(err){
                     reject(err);
                 }else{
@@ -54,6 +57,7 @@ class Model_Presensi {
             );
         });
     }
+
     static async getPresensiStatusByJadwal(id_jadwal) {
         return new Promise((resolve, reject) => {
             connection.query(
@@ -91,8 +95,6 @@ class Model_Presensi {
             );
         });
     }
-
-
 
     static async getId(id){
         return new Promise((resolve, reject) => {

@@ -26,9 +26,7 @@
                                                     const isImage = ['jpg', 'jpeg', 'png'].includes(fileExtension);
                                                     const isPdf = fileExtension === 'pdf';
                                                     const isWord = ['doc', 'docx'].includes(fileExtension);
-                                                    %>
-                    
-                                                    
+                                                    %>                                                                  
                                                     
                                                     <% if (isImage) { %>
                                                         <img src="/Template/icon/img_icon.png" alt="Image Icon" width="10%" height="10%"><p class="h4"><%= fileName %></p>
@@ -61,8 +59,6 @@
             </div>
         </div>  
     </div>
-    <!-- content-wrapper ends -->
-    <!-- partial:partials/_footer.html -->
 </div>
 
 <%- include('../partials/foot') %>

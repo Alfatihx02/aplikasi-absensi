@@ -42,7 +42,8 @@ class Model_Matakuliah {
 
     static async Update(id, Data) {
         return new Promise((resolve, reject) => {
-            connection.query('UPDATE matakuliah SET ? WHERE id_matakuliah = ?', [Data, id], function(err, result){
+            connection.query('UPDATE matakuliah SET ? WHERE id_matakuliah = ?', 
+                [Data, id], function(err, result){
                 if(err){
                     console.error('Error updating Matakuliah:', err);
                     reject(err);
@@ -56,7 +57,8 @@ class Model_Matakuliah {
 
     static async Delete(id) {
         return new Promise((resolve, reject) => {
-            connection.query('DELETE FROM matakuliah WHERE id_matakuliah = ?', [id], function(err, result){
+            connection.query('DELETE FROM matakuliah WHERE id_matakuliah = ?', 
+                [id], function(err, result){
                 if(err) {
                     reject(err);
                 } else {

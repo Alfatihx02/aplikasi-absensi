@@ -21,8 +21,7 @@
                                 const isImage = ['jpg', 'jpeg', 'png'].includes(fileExtension);
                                 const isPdf = fileExtension === 'pdf';
                                 const isWord = ['doc', 'docx'].includes(fileExtension);
-                                %>
-                                
+                                %>                              
                                 
                                 <% if (isImage) { %>
                                     <img src="<%= data.file_tugas %>" alt="Tugas Image" style="max-width: 100%; height: auto;">
@@ -36,12 +35,10 @@
                                 <br>
                                 <a href="<%= data.file_tugas %>" download class="btn btn-primary mt-2">Download File</a>
                                 
-                                
                             <% } else { %>
                                 <p>Tidak ada file tugas yang diunggah.</p>
                             <% } %>
                         </div>
-                          
                     </div>
                 </div>
             </div>
@@ -118,8 +115,6 @@
             </div>
         </div>
     </div>
-    <!-- content-wrapper ends -->
-    <!-- partial:partials/_footer.html -->
 </div>
 
 <%- include('../partials/foot') %>

@@ -4,7 +4,6 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 const Model_Dosen = require('../model/Model_Dosen');
-// const Model_Users = require('../model/Model_User');
 const Model_Presensi = require('../model/Model_Presensi');
 const Model_Jadwal = require('../model/Model_Jadwal');
 const Model_Tugas = require('../model/Model_Tugas');
@@ -166,50 +165,6 @@ router.get('/histori-presensi/:id_presensi', ensureAuthenticated, async (req, re
   }
 });
 
-// router.get('/jadwal/:id_jadwal', ensureAuthenticated, async (req, res, next) => {
-//   try {
-//     let id = req.session.userId;
-//     let id_jadwal = req.params.id_jadwal;
-
-//     let idDosen = await Model_Dosen.getIdDosenFromUserId(id);
-//     let dosenJadwal = await Model_Jadwal.getId(id_jadwal);
-//     let id_presensi = await Model_Presensi.getIdByIdJadwal(id_jadwal);
-//     console.log('id presensi: ', id_presensi)
-//     let dataMhs = await Model_Mahasiswa.getMhsByIdjadwal(id_jadwal);
-//     let dataPresensiMhs = await Model_HistoriPresensi.getByIdPresensi(id_presensi);
-//     console.log('mhs data: ', dataPresensiMhs);
-//     console.log('mahasiswa data: ',dataMhs);
-//     let presensiMhs = [];
-//     if (id_presensi) {
-//     presensiMhs = await Model_HistoriPresensi.getByIdPresensi(id_presensi);
-//     }
-
-//     if (dosenJadwal.id_dosen !== idDosen) {
-//       req.flash('error', 'Anda tidak memiliki akses ke jadwal ini.');
-//       return res.redirect('/dosen/');
-//     }
-
-
-//     let openPresensi = await Model_Presensi.getOpenPresensiByJadwal(id_jadwal);
-//     let presensiStatus = openPresensi ? 'dibuka' : 'belum dibuka';
-
-//     res.render('dosen/index_jadwal', {
-//       page: 'kuliah',
-//       data: dosenJadwal,
-//       presensiStatus: presensiStatus,
-//       id_presensi: openPresensi ? openPresensi.id_presensi : null,
-//       rows: presensiMhs,
-//       mhs: dataMhs,
-//       prMhs: dataPresensiMhs,
-//     });
-
-//   } catch (error) {
-//     console.error(error);
-//     req.flash('error', 'Terjadi kesalahan saat mengambil data');
-//     res.redirect('/dosen/');
-//   }
-// });
-
 router.post('/presensi/buka', ensureAuthenticated, async (req, res) => { ///..Routing presensi
   try {
     const { id_jadwal } = req.body;
@@ -335,7 +290,7 @@ router.post('/upload_tugas/:id_jadwal', upload.single('file_tugas'), async (req,
     // Siapkan data tugas
     const data = {
       judul_tugas,
-      file_tugas: req.file ? `/pengumpulan/${id_jadwal}/${req.file.filename}` : null, // Opsional, hanya diisi jika ada file
+      file_tugas: req.file ? `/pengumpulan/${id_jadwal}/${req.file.filename}` : null, 
       id_jadwal: id_jadwal,
     };
 
@@ -607,7 +562,7 @@ router.get('/pengumuman/:id_jadwal', ensureAuthenticated, async (req, res) => {
   }
 });
 
-// Create: Process pengumuman creation
+
 router.post('/upload_pengumuman/:id_jadwal', async (req, res) => {
   try {
     const id_jadwal = req.params.id_jadwal;
@@ -640,56 +595,6 @@ router.post('/upload_pengumuman/:id_jadwal', async (req, res) => {
   }
 });
 
-// Update: Display form to edit pengumuman
-router.get('/edit_pengumuman/:id_pengumuman', ensureAuthenticated, async (req, res) => {
-  try {
-    const id_pengumuman = req.params.id_pengumuman;
-    const pengumuman = await Model_Pengumuman.getId(id_pengumuman);
-    if (!pengumuman) {
-      req.flash('error', 'Pengumuman tidak ditemukan');
-      return res.redirect('/dosen');
-    }
-    res.render('dosen/edit_pengumuman', { pengumuman });
-  } catch (error) {
-    console.error('Error:', error);
-    req.flash('error', 'Terjadi kesalahan saat memuat form edit pengumuman');
-    res.redirect('/dosen');
-  }
-});
-
-// Update: Process pengumuman update
-router.post('/update_pengumuman/:id_pengumuman', async (req, res) => {
-  try {
-    const id_pengumuman = req.params.id_pengumuman;
-    const { judul, keterangan } = req.body;
-
-    if (!judul || judul.trim() === '' || !keterangan || keterangan.trim() === '') {
-      req.flash('error', 'Judul dan keterangan tidak boleh kosong.');
-      return res.redirect(`/dosen/edit_pengumuman/${id_pengumuman}`);
-    }
-
-    const pengumuman = await Model_Pengumuman.getId(id_pengumuman);
-    if (!pengumuman) {
-      req.flash('error', 'Pengumuman tidak ditemukan.');
-      return res.redirect('/dosen');
-    }
-
-    const data = {
-      judul,
-      keterangan
-    };
-
-    await Model_Pengumuman.Update(id_pengumuman, data);
-    req.flash('success', 'Berhasil mengupdate pengumuman.');
-    res.redirect(`/dosen/pengumuman/${pengumuman.id_jadwal}`);
-  } catch (error) {
-    console.error('Error:', error);
-    req.flash('error', 'Terjadi kesalahan saat mengupdate pengumuman');
-    res.redirect('/dosen');
-  }
-});
-
-// Delete: Process pengumuman deletion
 router.get('/delete_pengumuman/:id_pengumuman', ensureAuthenticated, async (req, res) => {
   try {
     const id_pengumuman = req.params.id_pengumuman;
@@ -713,6 +618,4 @@ router.get('/delete_pengumuman/:id_pengumuman', ensureAuthenticated, async (req,
     res.redirect('/dosen');
   }
 });
-
-
 module.exports = router;

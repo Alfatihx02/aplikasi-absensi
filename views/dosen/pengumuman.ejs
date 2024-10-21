@@ -26,7 +26,8 @@
                                                 <td><%= p.keterangan %></td>
                                                 
                                                 <td>
-                                                    <a href="/dosen/delete_pengumuman/<%= p.id_pengumuman %>" class="btn btn-danger text-light" >Hapus</a>
+                                                    <a href="/dosen/delete_pengumuman/<%= p.id_pengumuman %>" 
+                                                        class="btn btn-danger text-light" >Hapus</a>
                                                 </td>
                                             </tr>
                                         <% }); %>
@@ -55,34 +56,29 @@
                             <div class="form-group">
                                 <label for="keterangan">Isi Pengumuman</label>
                                 <textarea name="keterangan" id="exampleTextarea" class="form-control" rows="4" placeholder="Masukkan isi Pengumuman" required></textarea>
-                                <!-- <input type="text" name="keterangan" class="form-control" id="keterangan" placeholder="Masukkan Isi Pengumuman" required> -->
                             </div>
                             
                             <button type="submit" class="btn btn-primary me-2">Submit</button>
                             <button type="button" class="btn btn-light" onclick="window.history.back();">Cancel</button>
                         </form>
                         
-                        <script>
-        
-                            // Menambahkan event listener untuk tombol toggle form
-                            document.getElementById('toggleFormBtn').addEventListener('click', function() {
-                                const form = document.getElementById('tugasForm');
-                                if (form.style.display === "none") {
-                                    form.style.display = "block"; // Tampilkan form
-                                } else {
-                                    form.style.display = "none"; // Sembunyikan form
-                                }
-                            });
-                        </script>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- content-wrapper ends -->
-    <!-- partial:partials/_footer.html -->
-
-    <!-- partial -->
 </div>
 
+<script>
+        
+    // Menambahkan event listener untuk tombol toggle form
+    document.getElementById('toggleFormBtn').addEventListener('click', function() {
+        const form = document.getElementById('tugasForm');
+        if (form.style.display === "none") {
+            form.style.display = "block"; // Tampilkan form
+        } else {
+            form.style.display = "none"; // Sembunyikan form
+        }
+    });
+</script>
 <%- include('../partials/foot') %>

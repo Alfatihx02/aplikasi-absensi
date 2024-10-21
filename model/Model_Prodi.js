@@ -15,7 +15,8 @@ class Model_Prodi {
     }
     static async getData(){
         return new Promise((resolve, reject) => {
-            connection.query('SELECT p.*, j.nama_jurusan FROM prodi p JOIN jurusan j ON p.id_jurusan = j.id_jurusan ORDER BY id_prodi DESC', (err, rows) => {
+            connection.query(`SELECT p.*, j.nama_jurusan FROM prodi p JOIN jurusan j 
+                ON p.id_jurusan = j.id_jurusan ORDER BY id_prodi DESC`, (err, rows) => {
                 if(err){
                     reject(err);
                 } else {
@@ -54,7 +55,8 @@ class Model_Prodi {
 
     static async Update(id, Data) {
         return new Promise((resolve, reject) => {
-            connection.query('UPDATE prodi SET ? WHERE id_prodi = ?', [Data, id], function(err, result){
+            connection.query('UPDATE prodi SET ? WHERE id_prodi = ?', 
+                [Data, id], function(err, result){
                 if(err){
                     console.error('Error updating prodi:', err);
                     reject(err);
@@ -68,7 +70,8 @@ class Model_Prodi {
 
     static async Delete(id) {
         return new Promise((resolve, reject) => {
-            connection.query('DELETE FROM prodi WHERE id_prodi = ?', [id], function(err, result){
+            connection.query('DELETE FROM prodi WHERE id_prodi = ?', 
+                [id], function(err, result){
                 if(err) {
                     reject(err);
                 } else {

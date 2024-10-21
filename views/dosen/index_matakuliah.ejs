@@ -5,9 +5,8 @@
         <%- include('../partials/messages') %>
       <div class="row">
         <div class="col-md-10 grid-margin transparent">
-            <% for (let i = 0; i < data.length; i += 2) { %> <!-- Increment by 2 -->
-                <div class="row"> <!-- Start a new row every 2 items -->
-                  
+            <% for (let i = 0; i < data.length; i += 2) { %> 
+                <div class="row">                
                   <!-- Card 1 -->
                   <div class="col-md-6 mb-4 stretch-card transparent">
                     <div class="card card-tale">
@@ -19,8 +18,7 @@
                         <a href="/dosen/jadwal/<%= data[i].id_jadwal %>" class="text-black hover-cursor">Akses Kuliah</a>
                       </div>
                     </div>
-                  </div>
-                  
+                  </div>              
                   <!-- Card 2 (check if it exists) -->
                   <% if (i + 1 < data.length) { %>
                   <div class="col-md-6 mb-4 stretch-card transparent">
@@ -34,16 +32,11 @@
                       </div>
                     </div>
                   </div>
-                  <% } %> <!-- End if -->
-                  
+                  <% } %> <!-- End if -->  
                 </div> <!-- End row -->
             <% } %>
         </div>
       </div>
     </div>
 </div>
-
-
-
-
 <%- include('../partials/foot') %>

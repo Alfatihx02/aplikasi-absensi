@@ -16,7 +16,8 @@ class Model_Kelas {
 
     static async getData(){
         return new Promise((resolve, reject) => {
-            connection.query('SELECT k.*, p.nama_prodi FROM kelas k JOIN prodi p ON k.id_prodi = p.id_prodi ORDER BY id_kelas DESC', (err, rows) => {
+            connection.query('SELECT k.*, p.nama_prodi FROM kelas k JOIN prodi p ON k.id_prodi = p.id_prodi ORDER BY id_kelas DESC',
+                (err, rows) => {
                 if(err){
                     reject(err);
                 } else {

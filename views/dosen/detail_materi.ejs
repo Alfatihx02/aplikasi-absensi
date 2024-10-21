@@ -5,7 +5,6 @@
     <div class="content-wrapper">
         <%- include('../partials/messages') %>
         <div class="row">
-            <!-- Card daftar materi -->
             <div class="col-md-6 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
@@ -29,9 +28,11 @@
                                                 </td>
                                                 <td><%= m.keterangan %></td>
                                                 <td>
-                                                    <a href="#" class="btn btn-warning text-light" onclick="openEditForm('<%= m.id_materi %>', '<%= m.keterangan %>')">Edit</a>
+                                                    <a href="#" class="btn btn-warning text-light" 
+                                                    onclick="openEditForm('<%= m.id_materi %>', '<%= m.keterangan %>')">Edit</a>
                                                     <form action="/dosen/materi/delete/<%= m.id_materi %>" style="display:inline;">
-                                                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus materi ini?')">Hapus</button>
+                                                        <button type="submit" class="btn btn-outline-danger" 
+                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus materi ini?')">Hapus</button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -77,23 +78,25 @@
                     </div>
                 </div>
             </div>
-
             <!-- Form edit materi -->
             <div class="col-md-6 grid-margin stretch-card" id="editMateriForm" style="display: none;">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Form Edit Materi</h4>
-                        <form action="/dosen/materi/update/<%= materi.id_materi %>" id="formEditMateri" class="forms-sample" method="post" enctype="multipart/form-data">
+                        <form action="/dosen/materi/update/<%= materi.id_materi %>" id="formEditMateri" class="forms-sample" 
+                            method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="edit_keterangan">Keterangan Materi</label>
-                                <input type="text" name="keterangan" class="form-control" id="edit_keterangan" placeholder="Masukkan keterangan materi" required>
+                                <input type="text" name="keterangan" class="form-control" id="edit_keterangan" 
+                                placeholder="Masukkan keterangan materi" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="edit_file_materi">File Upload</label>
                                 <input type="file" name="file_materi" class="file-upload-default" id="edit_file_materi">
                                 <div class="input-group col-xs-12 d-flex align-items-center">
-                                    <input type="text" class="form-control file-upload-info" id="edit_file_upload_info" disabled placeholder="Upload File" />
+                                    <input type="text" class="form-control file-upload-info" id="edit_file_upload_info" 
+                                    disabled placeholder="Upload File" />
                                     <span class="input-group-append ms-2">
                                         <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                                     </span>
@@ -106,7 +109,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -119,7 +121,6 @@
             document.getElementById(inputId).click(); // Memicu dialog file
         });
     });
-
     // Menampilkan nama file yang dipilih
     document.getElementById('file_materi').addEventListener('change', function() {
         const fileName = this.files[0] ? this.files[0].name : '';
@@ -136,7 +137,6 @@
         const form = document.getElementById('materiForm');
         form.style.display = form.style.display === "none" ? "block" : "none";
     });
-
     // Fungsi membuka form edit materi
     function openEditForm(idMateri, keterangan) {
         document.getElementById('editMateriForm').style.display = 'block';
@@ -144,7 +144,6 @@
         // Set action form edit materi
         document.getElementById('formEditMateri').action = `/dosen/materi/update/${idMateri}`;
     }
-
     // Fungsi menutup form edit materi
     function closeEditForm() {
         document.getElementById('editMateriForm').style.display = 'none';
